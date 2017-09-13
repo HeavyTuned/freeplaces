@@ -7,7 +7,7 @@ class FreePlaces {
         this.config = {
             storageLocationIDStart: 12140,
             storageLocationIDEnd: null,
-            warehouseID: 1
+            warehouseId: 1
         };
         this.loadFreePlaces();
 
