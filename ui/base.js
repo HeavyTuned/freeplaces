@@ -1,11 +1,11 @@
 /**
  * Globale variablen
  */
-var warehouses = new Object();
-var filledplaces = new Object();
-var places = new Object();
-var freeplaces = new Object();
-var zones = new Object();
+var warehouses = {};
+var filledplaces = {};
+var places = {};
+var freeplaces = {};
+var zones = {};
 var calced = 0;
 var userId = 0;
 /**
@@ -19,7 +19,7 @@ function findPlaces() {
     $('#selectedoutput').hide();
     var comp = 0;
     var warehousesc = 0;
-    var locationnames = new Object();
+    var locationnames = {};
     $.each(warehouses, function(warehouseId, active) {
         if (active == "1") {
             warehousesc++;
@@ -41,7 +41,7 @@ function findPlaces() {
                         if (this.quantity > 0) {
                             locations = locations + 1;
                             comp = comp + 1;
-                            locationnames[this.storageLocationId] = new Object();
+                            locationnames[this.storageLocationId] = {};
                             locationnames[this.storageLocationId] = warehouseId;
                             html = html + "<tr><td>" + this.storageLocationId + "</td><td class='place' sid='" + this.storageLocationId + "'></td><td>" + this.quantity + "</td><td><span value='Umbuchen' id='umbuchen_" + this.storageLocationId + "' class='btn umbuchenbutton' sid='" + this.storageLocationId + "' wid='" + warehouseId + "' wname='" + $('.whname[whid=' + warehouseId + ']').text() + "' qty='" + this.quantity + "' onclick='umbuchenbutton(" + this.storageLocationId + ");'><i class='material-icons'>done</i></span></td></tr>";
                         }
@@ -113,21 +113,20 @@ function generatePdf(){
   doc.save('FreePlaces.pdf');
 }
 
-function getfreeplaces(warehouseId) {
+function getfreeplaces() {
     /**
      * Reset the objects
      */
-    filledplaces = new Object();
-    freeplaces = new Object();
-    places = new Object();
+    filledplaces = {};
+    freeplaces = {};
+    places = {};
     /**
      * Ajax
      */
 
-    if(warehouseId == undefined){
-        warehouseId = 1;
-    }
-    zones = new Object();
+    var warehouseId = 1;
+    
+    zones = {};
     zones["Alle"] = "Alle";
     $.ajax({
         type: "GET",
@@ -145,7 +144,7 @@ function getfreeplaces(warehouseId) {
                     /**
                      * Nur neues Lager zeigen
                      */
-                    filledplaces[this.storageLocationId] = new Object();
+                    filledplaces[this.storageLocationId] = {};
                     filledplaces[this.storageLocationId] = 1;
                 }
             });
@@ -170,7 +169,7 @@ function getfreeplaces(warehouseId) {
                         /**
                          * Nur neues Lager zeigen
                          */
-                        places[this.id] = new Object();
+                        places[this.id] = {};
                         places[this.id] = {
                             name: this.name,
                             type: this.type,
@@ -182,7 +181,7 @@ function getfreeplaces(warehouseId) {
                     $.each(places, function(id, place) {
 
                         if (typeof(filledplaces[id]) != "undefined") {} else {
-                            freeplaces[id] = new Object();
+                            freeplaces[id] = {};
                             freeplaces[id] = place;
 
                             var explodedName = place.name.split("-");
@@ -209,7 +208,7 @@ function returnfreeplaces(exp = "0") {
         var limitzaehler = 0;
         var results = 0;
         var html = "<table class='table table-striped table-bordered'><th>storageLocationId</th><th>storageLocationName</th>";
-        var xreturn = new Object();
+        var xreturn = {};
         $.each(freeplaces, function(id, place) {
             if (limitzaehler >= limit) {
                 return false;
@@ -223,7 +222,7 @@ function returnfreeplaces(exp = "0") {
             limitzaehler++;
             results++;
             html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-            xreturn[results] = new Object();
+            xreturn[results] = {};
             xreturn[results] = [id, place.name];
         
 
@@ -281,8 +280,8 @@ $(document).ready(function() {
     $('.showplaces').click(function() {
         returnfreeplaces();
     });
-    $('.showplaces').click(function() {
-        returnfreeplaces();
+    $('.calcplaces').click(function() {
+        getfreeplaces();
     });
     
     $('.export').click(function() {
