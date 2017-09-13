@@ -103,7 +103,7 @@ class FreePlaces {
                 itemsPerPage: "9999999"
             }, (managementData) => {
 
-                $.each(managementData.entries, function (entry) {
+                $.each(managementData.entries, (entry)=> {
                     if (entry.id < this.config.storageLocationIDStart) {
                         return true;
                     }
