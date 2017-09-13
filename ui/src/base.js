@@ -119,7 +119,8 @@ class FreePlaces {
                         shelf: entry.shelfId
                     };
                 });
-
+                $("#zoneSelect").empty().append(`<option value="Alle">"Alle"</option>`);
+                
                 $.each(this.places, function (id, place) {
 
                     if (typeof (this.filledplaces[id]) != "undefined") {} else {
@@ -128,6 +129,7 @@ class FreePlaces {
 
                         var explodedName = place.name.split("-");
                         this.zones[explodedName[0]] = explodedName[0];
+                        $("#zoneSelect").append(`<option value="${explodedName[0]}">${explodedName[0]}</option>`);
                     }
 
                 });
