@@ -1,10 +1,10 @@
 {
-    "name": "HT FreePlaces",
+    "name": "FreePlaces",
     "description": "Plentymarkets Plugin zum anzeigen & exportieren der freien Lagerorte",
     "namespace": "FreePlaces",
     "author": "Karol Kutrowski, based on work from Pascal Herrewyn GmbH",
     "authorIcon": "icon_author_xs.png",
-    "keywords": ["lagerorte", "stock", "stockmanagement", "places", "rack", "shelf", "freeplaces", "freielagerorte"],
+    "keywords": [],
     "type": "backend",
     "isClosedSource": "true",
     "pluginIcon": "icon_plugin_xs.png",
