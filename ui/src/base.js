@@ -83,7 +83,7 @@ class FreePlaces {
     loadFreePlaces() {
         this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseID + "/stock/storageLocations", {
             itemsPerPage: "9999999"
-        }, function (data) {
+        }, (data) => {
             $.each(data.entries, function (entry) {
                 if (entry.quantity > 0) {
                     if (entry.storageLocationId <= 12140) {
@@ -101,9 +101,9 @@ class FreePlaces {
             var limitzaehler = 0;
             this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseId + "/management/storageLocations", {
                 itemsPerPage: "9999999"
-            }, function (data) {
+            }, (managementData) => {
 
-                $.each(data.entries, function (entry) {
+                $.each(managementData.entries, function (entry) {
                     if (entry.id < this.config.storageLocationIDStart) {
                         return true;
                     }
