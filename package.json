@@ -1,0 +1,12 @@
+{
+	"name": "FreePlaces",
+	"version": "3.0.6000",
+	"devDependencies": {
+		"grunt": "1.0.1",
+		"grunt-cli": "0.1.13",
+		"grunt-contrib-uglify": ">=0.2.7",
+		"grunt-sass": "1.2.1",
+		"load-grunt-tasks": "3.1.0"
+	},
+	"dependencies": {}
+}

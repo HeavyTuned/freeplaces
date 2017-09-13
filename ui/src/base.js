@@ -143,7 +143,10 @@ function getfreeplaces() {
 }
 
 
-function returnfreeplaces(exp = "0") {
+function returnfreeplaces(exp) {
+    if(exp == undefined){
+        var exp = 0;
+    }
     if (Object.keys(places).length > 0) {
         var limit = $('#freeplaceslimit').val();
         var zone = $('#zoneSelect').val();
