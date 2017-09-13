@@ -9,6 +9,7 @@ class FreePlaces {
             storageLocationIDEnd: null,
             warehouseId: 1
         };
+        this.countDots = 1;
         this.loadFreePlaces();
 
         $(".calcplaces").click(()=>{
@@ -36,25 +37,10 @@ class FreePlaces {
             $('#error_modal').modal('show');
         });
         setInterval(function () {
-            var pins = $('#loadingpins').attr("pins");
-            switch (pins) {
-                case "0":
-                    $('#loadingpins').text(".");
-                    $('#loadingpins').attr("pins", "1");
-                    break;
-                case "1":
-                    $('#loadingpins').text("..");
-                    $('#loadingpins').attr("pins", "2");
-                    break;
-                case "2":
-                    $('#loadingpins').text("...");
-                    $('#loadingpins').attr("pins", "3");
-                    break;
-                case "3":
-                    $('#loadingpins').text("....");
-                    $('#loadingpins').attr("pins", "0");
-                    break;
-
+            $('#loadingpins').text(".".repeat(this.countDots));
+            this.countDots = this.countDots +1;
+            if(this.countDots > 3){
+                this.countDots = 1;
             }
         }, 500);
 
