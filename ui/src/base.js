@@ -2,7 +2,7 @@ class FreePlaces {
     constructor() {
         this.filledplaces = {};
         this.places = {};
-        this.freeplaces = {};
+        this.freeplaces = [];
         this.zones = {};
         this.config = {
             storageLocationIDStart: 12140,
@@ -131,9 +131,9 @@ class FreePlaces {
                 $.each(this.places, (id, place) => {
                     
                     if (typeof this.filledplaces[id] == "undefined") {
-                        this.freeplaces[id] = {};
-                        this.freeplaces[id] = place;
+                        this.freeplaces.push(place);
                         var explodedName = place.name.split("-");
+                        console.log(explodedName);
                         if(this.zones[explodedName[0]] == undefined){
                             $("#zoneSelect").append(`<option value="${explodedName[0]}">${explodedName[0]}</option>`);                            
                         }
@@ -148,17 +148,16 @@ class FreePlaces {
         });
     }
 
-    getFreePlaces(exp = 0) {
+    getFreePlaces(displayAs = 0) {
         if (Object.keys(this.places).length > 0) {
             var limit = $('#freeplaceslimit').val();
             var zone = $('#zoneSelect').val();
-            var limitzaehler = 0;
             var results = 0;
             var html = "<table class='table table-striped table-bordered'><th>storageLocationId</th><th>storageLocationName</th>";
             var xreturn = {};
 
             $.each(this.freeplaces, (id, place)=>{
-                if (limitzaehler >= limit) {
+                if (results >= limit) {
                     return false;
                 }
                 if (zone != "Alle") {
@@ -167,23 +166,18 @@ class FreePlaces {
                     }
                 }
 
-                limitzaehler++;
                 results++;
-                html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
+                html = html + "<tr><td>" + place.id + "</td><td>" + place.name + "</td></tr>";
                 xreturn[results] = {};
-                xreturn[results] = [id, place.name];
+                xreturn[results] = [place.id, place.name];
 
 
             });
             html = html + "</table>";
-            if (exp == "0") {
-                if (results > 0) {
-                    $('#freeplacesausgabe').html(html);
-                } else {
-                    $('#freeplacesausgabe').html("<hr><p style='color: red;'>Keine Lagerorte gefunden.</p>");
-                }
+            if (displayAs == "0") {
+                $('#freeplacesausgabe').html((results>0) ? html :"<hr><p style='color: red;'>Keine Lagerorte gefunden.</p>" );
             }
-            if (exp == "1") {
+            if (displayAs == "1") {
                 html = html.replace("<table", "<table style='border-spacing: 2px !important;' ");
                 html = html.replace("<td", "<td style='padding: 2px;' ");
                 return html;
