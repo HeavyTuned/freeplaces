@@ -143,7 +143,7 @@ class FreePlaces {
             $.each(this.freeplaces, (id, place)=>{
                 
                 if (zone != "Alle") {
-                    if (place.name.indexOf(zone) == -1) {
+                    if (place.name.indexOf(zone+"-") == -1) {
                         return true;
                     }
                 }

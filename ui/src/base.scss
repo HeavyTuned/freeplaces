@@ -2,11 +2,12 @@ body {
     font-family: plenty, Helvetica, Arial, sans-serif;
     font-size: 14px;
     * {
-        border-radius: 0px;
+        border-radius: 0px!important;
     }
     .btn {
         margin-bottom: 5px;
         border-radius: 0px;
+        border: none!important;
     }
     .btn-primary {
         background: rgb(0, 142, 189);
