@@ -146,9 +146,14 @@ class FreePlaces {
             var results = 0;
             var html = "<table class='table table-striped table-bordered'><th>storageLocationId</th><th>storageLocationName</th>";
             var xreturn = {};
+            console.log(this.freeplaces);
+            console.log(limit);
+            console.log(zone);
+
+
             $.each(this.freeplaces, (id, place)=>{
                 if (limitzaehler >= limit) {
-                    return false;
+                    return true;
                 }
                 if (zone != "Alle") {
                     if (place.name.indexOf(zone) == -1) {
