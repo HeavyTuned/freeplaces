@@ -84,7 +84,7 @@ class FreePlaces {
         this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseId + "/stock/storageLocations", {
             itemsPerPage: "9999999"
         }, (data) => {
-            $.each(data.entries, function (entry) {
+            $.each(data.entries, (entry)=>{
                 if (entry.quantity > 0) {
                     if (entry.storageLocationId <= 12140) {
                         return true;
@@ -121,7 +121,7 @@ class FreePlaces {
                 });
                 $("#zoneSelect").empty().append(`<option value="Alle">"Alle"</option>`);
                 
-                $.each(this.places, function (id, place) {
+                $.each(this.places, (id, place)=> {
 
                     if (typeof (this.filledplaces[id]) != "undefined") {} else {
                         this.freeplaces[id] = {};
@@ -146,7 +146,7 @@ class FreePlaces {
             var results = 0;
             var html = "<table class='table table-striped table-bordered'><th>storageLocationId</th><th>storageLocationName</th>";
             var xreturn = {};
-            $.each(this.freeplaces, function (id, place) {
+            $.each(this.freeplaces, (id, place)=>{
                 if (limitzaehler >= limit) {
                     return false;
                 }
