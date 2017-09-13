@@ -143,7 +143,7 @@ class FreePlaces {
                 
                 if (zone != "Alle") {
                     if (place.name.indexOf(zone) == -1) {
-                        return false;
+                        return true;
                     }
                 }
                 if (results >= limit) {
