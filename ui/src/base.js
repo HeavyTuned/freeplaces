@@ -85,7 +85,7 @@ class FreePlaces {
         this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseId + "/stock/storageLocations", {
             itemsPerPage: "9999999"
         }, (data) => {
-            $.each(data.entries, (entry)=>{
+            $.each(data.entries, (id, entry)=>{
                 if (entry.quantity > 0) {
                     if (entry.storageLocationId <= 12140) {
                         return true;
@@ -104,8 +104,7 @@ class FreePlaces {
                 itemsPerPage: "9999999"
             }, (managementData) => {
 
-                $.each(managementData.entries, (entry)=> {
-                    console.log(entry);
+                $.each(managementData.entries, (id, entry)=> {
                     
                     if (entry.id < this.config.storageLocationIDStart) {
                         return true;
@@ -125,7 +124,6 @@ class FreePlaces {
                     if (typeof this.filledplaces[id] != "undefined") {
                         this.freeplaces[id] = {};
                         this.freeplaces[id] = place;
-                        console.log(place.name+ " is free");
                         var explodedName = place.name.split("-");
                         this.zones[explodedName[0]] = explodedName[0];
                         $("#zoneSelect").append(`<option value="${explodedName[0]}">${explodedName[0]}</option>`);
@@ -146,7 +144,6 @@ class FreePlaces {
             var results = 0;
             var html = "<table class='table table-striped table-bordered'><th>storageLocationId</th><th>storageLocationName</th>";
             var xreturn = {};
-            console.log(this.freeplaces);
 
             $.each(this.freeplaces, (id, place)=>{
                 if (limitzaehler >= limit) {
