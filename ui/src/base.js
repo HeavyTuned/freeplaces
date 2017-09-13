@@ -105,10 +105,11 @@ class FreePlaces {
             }, (managementData) => {
 
                 $.each(managementData.entries, (entry)=> {
+                    console.log(entry);
+                    
                     if (entry.id < this.config.storageLocationIDStart) {
                         return true;
                     }
-                    console.log(entry.name);
                     this.places[entry.id] = {};
                     this.places[entry.id] = {
                         name: entry.name,
