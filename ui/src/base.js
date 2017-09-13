@@ -192,8 +192,8 @@ class FreePlaces {
         var rows = [];
         var x = 0;
         var pg = 1;
-        $.each(this.returnfreeplaces(2), function () {
-            rows[x] = this;
+        $.each(this.getFreePlaces(2), (pos, row)=>{
+            rows[x] = row;
             x++;
         });
         doc.autoTable(columns, rows, {
@@ -217,7 +217,7 @@ class FreePlaces {
         $('#load').modal('show');
         var csvContent = "data:text/csv;charset=utf-8,";
         csvContent += "storageLocationId;storageLocationName" + "\n";
-        $.each(this.returnfreeplaces("2"), function (key, place) {
+        $.each(this.getFreePlaces("2"), (key, place)=>{
             csvContent += place[0] + ";" + place[1] + "\n";
         });
         var encodedUri = encodeURI(csvContent);
