@@ -16,7 +16,7 @@ module.exports = function (grunt) {
                 files: {
 
 
-                    'base.min.js': [
+                    'ui/base.min.js': [
                         'ui/src/*.js'
                     ]
                 }
