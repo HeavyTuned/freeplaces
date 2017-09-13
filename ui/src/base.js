@@ -107,6 +107,7 @@ class FreePlaces {
                     this.places[entry.id] = {};
                     this.places[entry.id] = {
                         name: entry.name,
+                        position: entry.position,
                         id: entry.id
                     };
                 });
@@ -151,7 +152,7 @@ class FreePlaces {
                 }
 
                 results++;
-                html = html + "<tr><td>" + place.id + "</td><td>" + place.name + "</td></tr>";
+                html = html + `<tr><td>${place.id}</td><td data-position="${place.position}">${place.name}</td></tr>`;
                 xreturn[results] = {};
                 xreturn[results] = [place.id, place.name];
 
