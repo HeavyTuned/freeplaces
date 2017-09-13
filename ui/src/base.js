@@ -11,18 +11,18 @@ class FreePlaces {
         };
         this.loadFreePlaces();
 
-        $(".calcplaces").click(function () {
+        $(".calcplaces").click(()=>{
             this.loadFreePlaces();
         });
-        $(".showplaces").click(function () {
+        $(".showplaces").click(()=>{
             this.displayFreePlaces();
         });
 
-        $(".export").click(function () {
+        $(".export").click(()=>{
             this.exportFreePlacesAsCSV();
         });
 
-        $(".pdf").click(function () {
+        $(".pdf").click(()=>{
             this.exportFreePlacesAsPDF();
         });
         $(document).ajaxStart(function () {
@@ -122,8 +122,8 @@ class FreePlaces {
                 $("#zoneSelect").empty().append(`<option value="Alle">"Alle"</option>`);
                 
                 $.each(this.places, (id, place)=> {
-
-                    if (typeof (this.filledplaces[id]) != "undefined") {} else {
+                    
+                    if (typeof (this.filledplaces[id]) != "undefined") {
                         this.freeplaces[id] = {};
                         this.freeplaces[id] = place;
 
