@@ -1,1 +1,1 @@
-body{font-family:plenty, Helvetica, Arial, sans-serif;font-size:14px}body *{border-radius:0px}body .btn{margin-bottom:5px}body .btn-primary{background:#008ebd;color:#fff}body .fixed{position:fixed;width:25%}body .scrollit{float:left;width:71%}
+body{font-family:plenty, Helvetica, Arial, sans-serif;font-size:14px}body *{border-radius:0px}body .btn{margin-bottom:5px;border-radius:0px}body .btn-primary{background:#008ebd;color:#fff}body .fixed{position:fixed;width:25%;height:100%}body .scrollit{float:right;width:71%}body h5{font-size:17px;font-weight:bold}
