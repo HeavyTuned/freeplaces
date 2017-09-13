@@ -66,7 +66,7 @@ class FreePlaces {
     getJSON(route, data = {}, callback) {
         $.ajax({
             type: "GET",
-            url: "/rest/stockmanagement/warehouses/" + this.config.warehouseId + "/stock/storageLocations",
+            url: route,
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("accessToken")
             },
@@ -81,7 +81,7 @@ class FreePlaces {
     }
 
     loadFreePlaces() {
-        this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseID + "/stock/storageLocations", {
+        this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseId + "/stock/storageLocations", {
             itemsPerPage: "9999999"
         }, (data) => {
             $.each(data.entries, function (entry) {
