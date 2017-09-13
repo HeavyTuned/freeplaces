@@ -121,12 +121,14 @@ class FreePlaces {
                 
                 $.each(this.places, (id, place) => {
                     
-                    if (typeof this.filledplaces[id] != "undefined") {
+                    if (typeof this.filledplaces[id] == "undefined") {
                         this.freeplaces[id] = {};
                         this.freeplaces[id] = place;
                         var explodedName = place.name.split("-");
+                        if(this.zones[explodedName[0]] == undefined){
+                            $("#zoneSelect").append(`<option value="${explodedName[0]}">${explodedName[0]}</option>`);                            
+                        }
                         this.zones[explodedName[0]] = explodedName[0];
-                        $("#zoneSelect").append(`<option value="${explodedName[0]}">${explodedName[0]}</option>`);
                     }
 
                 });
