@@ -49,28 +49,23 @@
             <h5>Menü</h5>
             <div class="row">
                 <div class="col">
-                    <input type="button" class="btn calcplaces" value="freie Lagerorte berechnen" >                        
-                </div>
-                <div class="col">
                     <div style="display: inline-block">Lagerorte</div>
                     <br />
+                    <input type="button" class="btn calcplaces" value="freie Lagerorte berechnen" >                                            
                     <input type="button" class="btn showplaces" value="Anzeigen" >
                     <input type="button" class="btn export" value="Exportieren" >
                     <input type="button" class="btn pdf" value="PDF" >
                 </div>
-            </div>
-            <br />
-            <h5>Filter</h5>
-            <div class="row">
-                <div class="filter col">
-                    <p>Limit:&nbsp;</p><input type="number" id="freeplaceslimit" value="50" min="1">
-
+                <div class="col">
+                    <div style="display: inline-block">Filter</div>
+                    <br /> 
+                    <p>Limit:&nbsp;</p>
+                    <input type="number" id="freeplaceslimit" value="50" min="1">
                     <p>Zone:&nbsp;</p>
                     <div id="zoneSelectContainer">
                         <select id="zoneSelect">
                         </select>
                     </div>
-
                 </div>
             </div>
         </div>
