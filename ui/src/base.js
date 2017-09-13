@@ -79,7 +79,16 @@ class FreePlaces {
             }
         });
     }
-
+    
+    compare(a,b) {
+        if (a.position < b.position)
+          return -1;
+        if (a.position > b.position)
+          return 1;
+        return 0;
+      }
+      
+      
     loadFreePlaces() {
         $("#load").show();
         this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseId + "/stock/storageLocations", {
@@ -132,6 +141,7 @@ class FreePlaces {
                     }
 
                 });
+                this.freeplaces.sort(this.compare);
                 $("#load").hide();
 
             });
