@@ -119,7 +119,7 @@ class FreePlaces {
                         shelf: entry.shelfId
                     };
                 });
-                $("#zoneSelect").empty().append(`<option value="Alle">"Alle"</option>`);
+                $("#zoneSelect").empty().append(`<option value="Alle">Alle</option>`);
                 
                 $.each(this.places, (id, place)=> {
                     
@@ -183,7 +183,7 @@ class FreePlaces {
         }
     }
     displayFreePlaces() {
-
+        this.getFreePlaces(0);
     }
     exportFreePlacesAsPDF() {
         var doc = new jsPDF('p', 'pt');
