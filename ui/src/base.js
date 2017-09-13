@@ -81,6 +81,7 @@ class FreePlaces {
     }
 
     loadFreePlaces() {
+        $("#load").show();
         this.getJSON("/rest/stockmanagement/warehouses/" + this.config.warehouseId + "/stock/storageLocations", {
             itemsPerPage: "9999999"
         }, (data) => {
@@ -107,7 +108,7 @@ class FreePlaces {
                     if (entry.id < this.config.storageLocationIDStart) {
                         return true;
                     }
-
+                    console.log(entry.name);
                     this.places[entry.id] = {};
                     this.places[entry.id] = {
                         name: entry.name,
@@ -123,13 +124,14 @@ class FreePlaces {
                     if (typeof this.filledplaces[id] != "undefined") {
                         this.freeplaces[id] = {};
                         this.freeplaces[id] = place;
-
+                        console.log(place.name+ " is free");
                         var explodedName = place.name.split("-");
                         this.zones[explodedName[0]] = explodedName[0];
                         $("#zoneSelect").append(`<option value="${explodedName[0]}">${explodedName[0]}</option>`);
                     }
 
                 });
+                $("#load").hide();
 
             });
         });
