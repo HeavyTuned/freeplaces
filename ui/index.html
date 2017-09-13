@@ -1,14 +1,18 @@
 <html>
-
 <head>
     <title>PlentyMarkets | FreePlaces | Freie Lagerorte</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
     <script src="base.min.js"></script>
     <script src="html2canvas.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-        crossorigin="anonymous">
     <link rel="stylesheet" href="base.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
     <script src="jspdf.plugin.autotable.js"></script>
@@ -41,41 +45,29 @@
             </div>
         </div>
     </div>
-    <div id="freeplacesdialog" class="container" style="margin-bottom: 10px;">
-        
-        <div id="freeplacessettings">
-            <p class="text-danger ueberschnittmessage">Die freien Lagerorte werden bei jeder Berechnung lokal gespeichert, bei Mehrfachnutzung des Plugins kann es zu
-                Überschneidungen der Lagerorte kommen.</p>
-            <h5>Menü</h5>
-            <div class="row">
-                <div class="col">
-                    <div style="display: inline-block">Lagerorte</div>
-                    <br />
-                    <input type="button" class="btn calcplaces" value="freie Lagerorte berechnen" >                                            
-                    <input type="button" class="btn showplaces" value="Anzeigen" >
-                    <input type="button" class="btn export" value="Exportieren" >
-                    <input type="button" class="btn pdf" value="PDF" >
-                </div>
-                <div class="col">
-                    <div style="display: inline-block">Filter</div>
-                    <br /> 
-                    <p>Limit:&nbsp;</p>
-                    <input type="number" id="freeplaceslimit" value="50" min="1">
-                    <p>Zone:&nbsp;</p>
-                    <div id="zoneSelectContainer">
-                        <select id="zoneSelect">
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br />
-        <h5>Ausgabe</h5>
+    <div class="container-fluid">
         <div class="row">
-            <div id="freeplacesausgabe" class="col">
+            <div class="col-lg-3 fixed">
+                <h5>Menü</h5>
+                <br />
+                <input type="button" class="btn btn-primary calcplaces" value="freie Lagerorte berechnen" >                                            
+                <input type="button" class="btn btn-primary showplaces" value="Anzeigen" >
+                <input type="button" class="btn btn-primary export" value="Exportieren" >
+                <input type="button" class="btn btn-primary pdf" value="PDF" >
+                <h5>Filter</h5>
+                <br /> 
+                <p>Limit:&nbsp;</p>
+                <input type="number" id="freeplaceslimit" class="form-control" value="50" min="1">
+                <p>Zone:&nbsp;</p>
+                <select id="zoneSelect"  class="form-control" >
+                </select>
+            </div>
+            <div class="col-lg-9 scrollit">
+                <p class="text-danger ueberschnittmessage">Die freien Lagerorte werden bei jeder Berechnung lokal gespeichert, bei Mehrfachnutzung des Plugins kann es zu Überschneidungen der Lagerorte kommen.</p>
+                <h5>Ausgabe</h5>
+                <div id="freeplacesausgabe" class="col"></div>
             </div>
         </div>
-        <br />
     </div>
     <div id="pdfElementHandler"></div>
 </body>
