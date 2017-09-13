@@ -5,7 +5,20 @@ module.exports = function (grunt) {
     // tasks
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
+        browserify: {
+            dist: {
+                files: {
+                    // destination for transpiled js : source js
+                    'ui/base.min.js': 'ui/src/*.js'
+                },
+                options: {
+                    transform: [['babelify', { presets: "es2015" }]],
+                    browserifyOptions: {
+                        debug: true
+                    }
+                }
+            }
+        },
         uglify: {
         
             default: {
@@ -17,7 +30,7 @@ module.exports = function (grunt) {
 
 
                     'ui/base.min.js': [
-                        'ui/src/*.js'
+                        'ui/base.min.js'
                     ]
                 }
             }
@@ -37,5 +50,5 @@ module.exports = function (grunt) {
     });
 
 
-    grunt.registerTask('default', ['uglify',"sass"]);
+    grunt.registerTask('default', ['browserify:dist:','uglify',"sass"]);
 };
