@@ -107,9 +107,7 @@ class FreePlaces {
                     this.places[entry.id] = {};
                     this.places[entry.id] = {
                         name: entry.name,
-                        type: entry.type,
-                        rack: entry.rackId,
-                        shelf: entry.shelfId
+                        id: entry.id
                     };
                 });
                 $("#zoneSelect").empty().append(`<option value="Alle">Alle</option>`);
@@ -119,7 +117,6 @@ class FreePlaces {
                     if (typeof this.filledplaces[id] == "undefined") {
                         this.freeplaces.push(place);
                         var explodedName = place.name.split("-");
-                        console.log(explodedName);
                         if(this.zones[explodedName[0]] == undefined){
                             $("#zoneSelect").append(`<option value="${explodedName[0]}">${explodedName[0]}</option>`);                            
                         }
@@ -143,13 +140,14 @@ class FreePlaces {
             var xreturn = {};
 
             $.each(this.freeplaces, (id, place)=>{
-                if (results >= limit) {
-                    return false;
-                }
+                
                 if (zone != "Alle") {
                     if (place.name.indexOf(zone) == -1) {
                         return false;
                     }
+                }
+                if (results >= limit) {
+                    return false;
                 }
 
                 results++;
