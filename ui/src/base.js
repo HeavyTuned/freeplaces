@@ -107,9 +107,6 @@ class FreePlaces {
                     if (entry.id < this.config.storageLocationIDStart) {
                         return true;
                     }
-                    if (entry.id !== null && entry.id > this.config.storageLocationIDEnd) {
-                        return true;
-                    }
 
                     this.places[entry.id] = {};
                     this.places[entry.id] = {
@@ -121,9 +118,9 @@ class FreePlaces {
                 });
                 $("#zoneSelect").empty().append(`<option value="Alle">Alle</option>`);
                 
-                $.each(this.places, (id, place)=> {
+                $.each(this.places, (id, place) => {
                     
-                    if (typeof (this.filledplaces[id]) != "undefined") {
+                    if (typeof this.filledplaces[id] != "undefined") {
                         this.freeplaces[id] = {};
                         this.freeplaces[id] = place;
 
@@ -147,17 +144,14 @@ class FreePlaces {
             var html = "<table class='table table-striped table-bordered'><th>storageLocationId</th><th>storageLocationName</th>";
             var xreturn = {};
             console.log(this.freeplaces);
-            console.log(limit);
-            console.log(zone);
-
 
             $.each(this.freeplaces, (id, place)=>{
                 if (limitzaehler >= limit) {
-                    return true;
+                    return false;
                 }
                 if (zone != "Alle") {
                     if (place.name.indexOf(zone) == -1) {
-                        return true;
+                        return false;
                     }
                 }
 
