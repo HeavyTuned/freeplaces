@@ -5,7 +5,7 @@ var warehouses = new Object();
 var filledplaces = new Object();
 var places = new Object();
 var freeplaces = new Object();
-var shelves = new Object();
+var zones = new Object();
 var calced = 0;
 var userId = 0;
 /**
@@ -123,6 +123,12 @@ function getfreeplaces(warehouseId) {
     /**
      * Ajax
      */
+
+    if(warehouseId == undefined){
+        warehouseId = 1;
+    }
+    zones = new Object();
+    zones["Alle"] = "Alle";
     $.ajax({
         type: "GET",
         url: "/rest/stockmanagement/warehouses/" + warehouseId + "/stock/storageLocations",
@@ -135,6 +141,10 @@ function getfreeplaces(warehouseId) {
         success: function(data) {
             $.each(data.entries, function() {
                 if (this.quantity > 0) {
+                    if(this.storageLocationId <= 12140){return true;} 
+                    /**
+                     * Nur neues Lager zeigen
+                     */
                     filledplaces[this.storageLocationId] = new Object();
                     filledplaces[this.storageLocationId] = 1;
                 }
@@ -142,7 +152,7 @@ function getfreeplaces(warehouseId) {
             /**
              * Wenn die Storagelocations durch sind sucht er sich alle Locations
              */
-            var limit = 4;
+            var limit = 50;
             var limitzaehler = 0;
             $.ajax({
                 type: "GET",
@@ -154,48 +164,12 @@ function getfreeplaces(warehouseId) {
                     itemsPerPage: "9999999"
                 },
                 success: function(data) {
-                    /**
-                     * Racks bekommen
-                     */
-                    $.ajax({
-                        type: "GET",
-                        url: "/rest/stockmanagement/warehouses/" + warehouseId + "/management/racks",
-                        headers: {
-                            "Authorization": "Bearer " + localStorage.getItem("accessToken")
-                        },
-                        data: {
-                            itemsPerPage: "9999999"
-                        },
-                        success: function(data) {
-                            var xhtml = "<select id='freeplacesracks'><option value='all'>Alle</option>";
-                            $.each(data.entries, function() {
-                                xhtml = xhtml + "<option value='" + this.id + "'>" + this.name + "</option>";
-                                $.ajax({
-                                    type: "GET",
-                                    url: "/rest/stockmanagement/warehouses/" + warehouseId + "/management/racks/" + this.id + "/shelves",
-                                    headers: {
-                                        "Authorization": "Bearer " + localStorage.getItem("accessToken")
-                                    },
-                                    data: {
-                                        itemsPerPage: "9999999"
-                                    },
-                                    success: function(data) {
-
-                                        $.each(data.entries, function() {
-                                            shelves[this.id] = new Object();
-                                            shelves[this.id] = this;
-                                        });
-                                    }
-                                });
-                            });
-                            xhtml = xhtml + "</select><script>$(document).ready(function(){$('#freeplacesracks').change( function(){changeregal($(this).val());});});</script>";
-                            $('#rackselect').html(xhtml);
-                            alert("Berechnung erfolgreich.");
-                            $('.btn').removeAttr("disabled");
-                        }
-                    });
-
+    
                     $.each(data.entries, function() {
+                        if(this.id <= 12140){return true;} 
+                        /**
+                         * Nur neues Lager zeigen
+                         */
                         places[this.id] = new Object();
                         places[this.id] = {
                             name: this.name,
@@ -210,6 +184,9 @@ function getfreeplaces(warehouseId) {
                         if (typeof(filledplaces[id]) != "undefined") {} else {
                             freeplaces[id] = new Object();
                             freeplaces[id] = place;
+
+                            var explodedName = place.name.split("-");
+                            zones[explodedName[0]] = explodedName[0];
                         }
 
                     });
@@ -224,133 +201,31 @@ function getfreeplaces(warehouseId) {
 
 }
 
-function changeregal(id) {
-    var html = "<select id='shelvselects' ><option value='all'>Alle</option>";
-    $.each(shelves, function() {
-        if (this.rackId == id) {
-            html = html + "<option value='" + this.id + "'>" + this.name + "</option>";
-        }
-    });
-    html = html + "</select>";
-    $('#shelvselect').html(html);
-}
-
-function getwarehouses() {
-    var html = "";
-    $.ajax({
-        async: false,
-        type: "GET",
-        url: "/rest/stockmanagement/warehouses",
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("accessToken")
-        },
-        success: function(data) {
-            var html = "<select id='freeplaceswarehouses'>";
-
-            $.each(data, function() {
-                html = html + "<option value='" + this.id + "'>" + this.name + "</option>"
-            });
-            html = html + "</select>";
-            $('#warehousesselect').html(html);
-        },
-        error: function(data) {}
-    });
-
-}
-
-function getuser() {
-    $.ajax({
-        async: false,
-        type: "GET",
-        url: "/rest/authorized_user",
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("accessToken")
-        },
-        success: function(data) {
-            userId = data.userId;
-        },
-        error: function(data) {}
-    });
-}
 
 function returnfreeplaces(exp = "0") {
     if (Object.keys(places).length > 0) {
         var limit = $('#freeplaceslimit').val();
-        var type = $('#freeplacestype').val();
-        var rackId = $('#freeplacesracks').val();
-        var shelvId = $('#shelvselects').val();
+        var zone = $('#zoneSelect').val();
         var limitzaehler = 0;
         var results = 0;
         var html = "<table class='table table-striped table-bordered'><th>storageLocationId</th><th>storageLocationName</th>";
         var xreturn = new Object();
         $.each(freeplaces, function(id, place) {
-            if (limitzaehler == limit) {
+            if (limitzaehler >= limit) {
                 return false;
             }
-
-            if (rackId == "all" && shelvId == "all" && type == "all") {
-                limitzaehler++;
-                results++;
-                html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                xreturn[results] = new Object();
-                xreturn[results] = [id, place.name];
-            } else if (rackId == "all" && shelvId == "all" && type != "all") {
-                if (place.type == type) {
-                    limitzaehler++;
-                    results++;
-                    html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                    xreturn[results] = new Object();
-                    xreturn[results] = [id, place.name];
-                }
-            } else if (rackId == "all" && shelvId != "all" && type == "all") {
-                if (place.shelf == shelvId) {
-                    limitzaehler++;
-                    results++;
-                    html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                    xreturn[results] = new Object();
-                    xreturn[results] = [id, place.name];
-                }
-            } else if (rackId != "all" && shelvId == "all" && type == "all") {
-                if (place.rack == rackId) {
-                    limitzaehler++;
-                    results++;
-                    html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                    xreturn[results] = new Object();
-                    xreturn[results] = [id, place.name];
-                }
-            } else if (rackId == "all" && shelvId != "all" && type != "all") {
-                if (place.shelf == shelvId && place.type == type) {
-                    limitzaehler++;
-                    results++;
-                    html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                    xreturn[results] = new Object();
-                    xreturn[results] = [id, place.name];
-                }
-            } else if (rackId != "all" && shelvId != "all" && type == "all") {
-                if (place.shelf == shelvId && place.rack == rackId) {
-                    limitzaehler++;
-                    results++;
-                    html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                    xreturn[results] = new Object();
-                    xreturn[results] = [id, place.name];
-                }
-            } else if (rackId != "all" && shelvId == "all" && type != "all") {
-                if (place.rack == rackId && place.type == type) {
-                    limitzaehler++;
-                    results++;
-                    html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                    xreturn[results] = new Object();
-                    xreturn[results] = [id, place.name];
-                }
-            } else if (rackId != "all" && shelvId != "all" && type != "all") {
-                if (place.shelf == shelvId && place.rack == rackId && place.type == type) {
-                    limitzaehler++;
-                    results++;
-                    html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
-                    xreturn[results] = new Object();
-                    xreturn[results] = [id, place.name];
+            if(zone != "Alle"){
+                if(place.name.indexOf(zone)==-1){
+                    return true;
                 }
             }
+
+            limitzaehler++;
+            results++;
+            html = html + "<tr><td>" + id + "</td><td>" + place.name + "</td></tr>";
+            xreturn[results] = new Object();
+            xreturn[results] = [id, place.name];
+        
 
         });
         html = html + "</table>";
@@ -386,7 +261,6 @@ function deletefreeplace(id) {
  * Wenn das dokument ready ist
  */
 $(document).ready(function() {
-    getwarehouses();
     /**
      * Wenn ein Ajax-Request gestartet wird
      */
@@ -401,58 +275,16 @@ $(document).ready(function() {
         $('#error_modal').modal('show');
     });
 
-    /**
-     * Wenn ein Lager ausgewählt wird
-     */
-    $('.warehousecheckbox').change(function() {
 
-        $('.warehousecheckbox').each(function() {
-            var checked = 0;
-            if ($(this).is(":checked")) {
-                checked = 1;
 
-            }
-            warehouses[$(this).attr('whid')] = new Object();
-            warehouses[$(this).attr('whid')] = checked;
-        });
-
-        if ($('.findarticle').is(":disabled") && $('#menu_var').text() == "umbuchen" && $('.locationean').is(":disabled")) {
-            $('#load').modal('show');
-            setTimeout(function() {
-                findPlaces();
-            }, 20);
-        }
-    });
-
-    $('#togglemenu').click(function() {
-        var active = $(this).attr("act");
-        if (active == "1") {
-            $('#freeplacessettings').fadeOut(100);
-            $(this).val("Menü einblenden");
-            $(this).attr("act", "0");
-        } else {
-            $('#freeplacessettings').fadeIn(100);
-            $(this).val("Menü ausblenden");
-            $(this).attr("act", "1");
-        }
-    });
-    /**
-     * Menubuttons z.b. Einbuchen oder Umbuchen
-     */
-    $('.menutip').click(function() {
-        window.location = $(this).attr('href');
-    });
-
-    $('.ueberschnitt').click(function() {
-        $('.ueberschnittmessage').fadeOut(200);
-        $(this).fadeOut(200)
-    });
-    $('.calcfreeplaces').click(function() {
-        getfreeplaces($('#freeplaceswarehouses').val());
+    getfreeplaces();
+    $('.showplaces').click(function() {
+        returnfreeplaces();
     });
     $('.showplaces').click(function() {
         returnfreeplaces();
     });
+    
     $('.export').click(function() {
         exportfreeplaces();
     });
